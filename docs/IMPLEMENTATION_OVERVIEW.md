@@ -35,6 +35,7 @@
 
 전체 지표(채점표·재료 모델 데이터 포함): [`results/metrics/grand_comparison_all_models.csv`](results/metrics/grand_comparison_all_models.csv)
 모델별 코드·산출물 매핑: **[MODEL_CATALOG.md](MODEL_CATALOG.md)**
+🧩 **방법론 분해**(모델 = 후보+랭킹+다양화 블록): **[docs/METHODOLOGY_BREAKDOWN.md](docs/METHODOLOGY_BREAKDOWN.md)**
 
 **주요 발견**
 - **P7(SciBERT 하이브리드 리랭커)이 최고 단일 모델** — 성능의 원천은 인코더가 아니라 방법론(aux 3피처 + PRMU-가중 pairwise). (여러 인코더 교체 실험은 채점표 재료 기록 참조.)
@@ -72,8 +73,8 @@
 ├─ data/                 # 외부 입력 (cs_papers_20232024.csv)
 ├─ results/              # 예측 결과 + 지표 (아래)
 │  ├─ metrics/                        # 전 지표 CSV·JSON (원장 포함)
-│  ├─ predictions_per_document/       # 문서별 결과 17개 (F1·정오 대조)
-│  └─ predictions_per_keyphrase/      # 구절별 결과 17개 (rank/score/source) [Git LFS]
+│  └─ predictions_per_document/       # 문서별 결과 17개 (F1·정오 대조)
+│                                      # (구절별 predictions_per_keyphrase 708MB는 팀 브랜치에서 제외)
 ├─ tests/                # 평가기 단위 테스트
 ├─ MODEL_CATALOG.md      # ★ 모델 ↔ 코드 ↔ CSV ↔ 기법 완전 매핑
 ├─ requirements.txt
@@ -128,6 +129,7 @@ python scripts/team_spec_ensemble.py
 | [docs/ENSEMBLE_REFERENCE_COMPARISON.md](docs/ENSEMBLE_REFERENCE_COMPARISON.md) | 앙상블 기준 P7 vs 베이스라인 랭킹 재현 비교 |
 | [docs/PRMU_PAIRWISE_RERANKER_PLAN.md](docs/PRMU_PAIRWISE_RERANKER_PLAN.md) | PRMU 가중 pairwise 설계 |
 | [docs/REPORT_AUTHOR_KEYPHRASE_PATTERNS.md](docs/REPORT_AUTHOR_KEYPHRASE_PATTERNS.md) | 저자 키프레이즈 선정 패턴 분석 |
+| [docs/METHODOLOGY_BREAKDOWN.md](docs/METHODOLOGY_BREAKDOWN.md) | 🧩 방법론 분해 (모델 = 후보+랭킹+다양화 블록) |
 | [docs/MASTER_PLAN.md](docs/MASTER_PLAN.md) | 프로젝트 마스터 플랜 |
 
 ---
@@ -145,7 +147,7 @@ python scripts/team_spec_ensemble.py
 ## 데이터·모델 가중치
 
 - 학습 체크포인트(총 21GB)와 대용량 중간 산출물은 저장소에 포함하지 않는다 — 위 재현 명령으로 생성.
-- `results/predictions_per_keyphrase/`는 파일당 ~45MB(총 ~708MB)로 일반 git에 포함된다(파일당 100MB 한도 이내). 저장소가 다소 커서 클론이 느릴 수 있다.
+- 구절별 예측(`results/predictions_per_keyphrase/`, ~708MB)은 용량 문제로 **팀 브랜치에서 제외**했다(문서별 예측+지표는 포함). 필요 시 `python scripts/organize_results.py`로 재생성한다.
 
 ## 라이선스
 
