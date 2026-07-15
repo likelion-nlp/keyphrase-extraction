@@ -1,0 +1,12 @@
+﻿run,system,F1@5,F1@M,present_F1@5,absent_R@10,recall_U,nDCG@10
+B0_tfidf,TF-IDF,0.1261,0.1264,0.172,0.0079,0.0121,0.1761
+B1_keybert,KeyBERT,0.0502,0.0477,0.1055,0.0045,0.0012,0.076
+B2_keybert_mmr,KeyBERT+MMR,0.0285,0.0292,0.0502,0.0027,0.0008,0.0421
+B3_bart,BART-base (full),0.2445,0.2573,0.3039,0.0112,0.0114,0.3088
+B4_keybart,KeyBART (full),0.2377,0.2543,0.2965,0.0089,0.0097,0.3111
+P1_hybrid_fusion,Hybrid fusion (no MMR),0.207,0.2131,0.3057,0.0172,0.0082,0.3012
+P2_hybrid_fusion_mmr,Hybrid fusion + MMR (제안·정밀도),0.256,0.2662,0.342,0.0219,0.0187,0.3429
+P5_pairwise,Pairwise CE 무가중,0.2388,0.236,0.3109,0.046,0.0421,0.3396
+P5_pairwise_mmr,Pairwise CE 무가중 + MMR,0.2278,0.2276,0.2946,0.0439,0.0428,0.3257
+P6_pairwise_prmu,Pairwise CE PRMU-가중 (제안·커버리지),0.2267,0.2228,0.298,0.0494,0.0467,0.3246
+P6_pairwise_prmu_mmr,Pairwise CE PRMU-가중 (제안·커버리지) + MMR,0.2209,0.2202,0.2873,0.0458,0.0446,0.3128

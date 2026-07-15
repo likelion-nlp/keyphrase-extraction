@@ -1,0 +1,7 @@
+# 노트북을 문서로 분류 (언어 통계 노이즈 축소)
+*.ipynb linguist-documentation
+
+# 텍스트 파일 줄바꿈 정규화
+*.py text
+*.md text
+*.csv text

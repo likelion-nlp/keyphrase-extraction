@@ -1,0 +1,34 @@
+# BART-base One2Seq 생성 베이스라인 (플랜 13절, 16GB GPU 기준)
+seed: 42
+model_name: facebook/bart-base
+run_id: bart_base_beam5_seed42
+
+data:
+  input_mode: title_abstract
+  target_format: present_absent     # present_absent | plain
+  shuffle_targets: false
+  # 단계적 확장 (Stage A→D): 1000 → 10000 → 50000 → 530809
+  train_subset: 10000
+  val_subset: 2000
+  eval_subset: 2000
+
+tokenization:
+  max_source_length: 384
+  max_target_length: 96
+
+training:
+  learning_rate: 5.0e-5
+  per_device_train_batch_size: 8
+  gradient_accumulation_steps: 4    # effective batch = 32
+  num_train_epochs: 3
+  warmup_ratio: 0.05
+  weight_decay: 0.01
+  gradient_checkpointing: false
+  # 정밀도는 자동: bf16 지원 GPU → bf16, 아니면 fp16 (src.generation.precision_dtype_kwargs)
+
+decoding:
+  strategy: beam5                   # greedy | beam5 | beam10 | diverse_beam | top_p
+  max_new_tokens: 96
+
+evaluation:
+  ks: [5, 10]

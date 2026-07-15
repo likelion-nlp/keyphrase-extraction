@@ -1,0 +1,33 @@
+# KeyBART fine-tuning (강한 생성 베이스라인) — BART와 "동일 조건" 비교 (플랜 Notebook 07)
+# BART-large 아키텍처(~406M)이므로 batch를 절반으로, accumulation을 2배로.
+seed: 42
+model_name: bloomberg/KeyBART
+run_id: keybart_beam5_seed42
+
+data:
+  input_mode: title_abstract
+  target_format: present_absent
+  shuffle_targets: false
+  train_subset: 10000               # BART와 반드시 동일
+  val_subset: 2000
+  eval_subset: 2000
+
+tokenization:
+  max_source_length: 384
+  max_target_length: 96
+
+training:
+  learning_rate: 4.0e-5
+  per_device_train_batch_size: 4
+  gradient_accumulation_steps: 8    # effective batch = 32 (BART와 동일)
+  num_train_epochs: 3
+  warmup_ratio: 0.05
+  weight_decay: 0.01
+  gradient_checkpointing: true      # 16GB VRAM에서 large 모델 여유 확보
+
+decoding:
+  strategy: beam5
+  max_new_tokens: 96
+
+evaluation:
+  ks: [5, 10]

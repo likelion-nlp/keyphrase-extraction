@@ -1,0 +1,31 @@
+# GERD 하이브리드 파이프라인 설정 (플랜 7절)
+seed: 42
+run_id: hybrid_fusion_mmr_seed42
+
+extractor:
+  model: sentence-transformers/all-MiniLM-L6-v2
+  n_extract: 30
+
+generator:
+  checkpoint: outputs/checkpoints/keybart   # fine-tuned KeyBART 경로
+  decoding_strategy: beam10
+  n_generate: 30
+
+fusion:
+  # 초기 가중치 (validation grid search로 재탐색, 플랜 7.5절)
+  w_gen: 0.35
+  w_ext: 0.20
+  w_sem: 0.35
+  w_title: 0.10
+
+reranker:
+  use_cross_encoder: false
+  model: cross-encoder/ms-marco-MiniLM-L-6-v2
+
+mmr:
+  use: true
+  lambda: 0.5                       # validation 500건 선택값 (outputs/metrics/mmr_val_selection.json)
+  lambda_grid: [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+
+output:
+  top_k: 5

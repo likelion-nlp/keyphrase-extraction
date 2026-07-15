@@ -1,0 +1,50 @@
+{
+  "no_mmr": {
+    "F1@5": 0.207,
+    "F1@10": 0.1842,
+    "semantic_redundancy": 0.4853,
+    "dup_ratio": 0.0
+  },
+  "lambda_0.3": {
+    "F1@5": 0.2482,
+    "F1@10": 0.2041,
+    "semantic_redundancy": 0.2815,
+    "dup_ratio": 0.0
+  },
+  "lambda_0.4": {
+    "F1@5": 0.2541,
+    "F1@10": 0.2094,
+    "semantic_redundancy": 0.3052,
+    "dup_ratio": 0.0
+  },
+  "lambda_0.5": {
+    "F1@5": 0.256,
+    "F1@10": 0.2105,
+    "semantic_redundancy": 0.3367,
+    "dup_ratio": 0.0
+  },
+  "lambda_0.6": {
+    "F1@5": 0.2523,
+    "F1@10": 0.2078,
+    "semantic_redundancy": 0.3742,
+    "dup_ratio": 0.0
+  },
+  "lambda_0.7": {
+    "F1@5": 0.2439,
+    "F1@10": 0.2038,
+    "semantic_redundancy": 0.4081,
+    "dup_ratio": 0.0
+  },
+  "lambda_0.8": {
+    "F1@5": 0.2317,
+    "F1@10": 0.1976,
+    "semantic_redundancy": 0.4375,
+    "dup_ratio": 0.0
+  },
+  "lambda_0.9": {
+    "F1@5": 0.2185,
+    "F1@10": 0.1909,
+    "semantic_redundancy": 0.4654,
+    "dup_ratio": 0.0
+  }
+}

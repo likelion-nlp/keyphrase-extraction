@@ -1,0 +1,65 @@
+{
+  "config": {
+    "keybart": "zeroshot",
+    "n_train": 1000,
+    "n_test": 2000,
+    "epochs": 2
+  },
+  "absent_candidate_ceiling": 0.0571,
+  "hybrid_metrics": {
+    "f1@5": 0.2143,
+    "f1@10": 0.1992,
+    "present_f1@10": 0.2359,
+    "absent_R@10": 0.0469,
+    "absent_R@50": 0.0469,
+    "absent_MAP": 0.0356
+  },
+  "f1@10_by_model": {
+    "Hybrid ranker": 0.1992,
+    "Extractive-only": 0.1816,
+    "KeyBART raw": 0.1095,
+    "Frequency": 0.1019
+  },
+  "rank_ci_f1@10": {
+    "Hybrid ranker": [
+      4,
+      4
+    ],
+    "Extractive-only": [
+      3,
+      3
+    ],
+    "KeyBART raw": [
+      1,
+      2
+    ],
+    "Frequency": [
+      1,
+      2
+    ]
+  },
+  "absent_r@10_by_model": {
+    "Hybrid ranker": 0.0469,
+    "Extractive-only": 0.0083,
+    "KeyBART raw": 0.0427,
+    "Frequency": 0.0464
+  },
+  "rank_ci_absent": {
+    "Hybrid ranker": [
+      3,
+      4
+    ],
+    "Extractive-only": [
+      1,
+      1
+    ],
+    "KeyBART raw": [
+      2,
+      2
+    ],
+    "Frequency": [
+      3,
+      4
+    ]
+  }
+}

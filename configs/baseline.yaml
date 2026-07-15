@@ -1,0 +1,26 @@
+# 추출형 베이스라인 설정 (TF-IDF / KeyBERT)
+seed: 42
+
+data:
+  dataset: taln-ls2n/kp20k
+  input_mode: title_abstract        # title_abstract | abstract_only | title_only
+  eval_split: test
+  eval_subset: 2000                 # null이면 전체 20,000 (시간 오래 걸림)
+  tfidf_fit_subset: 50000           # TF-IDF vocabulary 구축용 train subset
+
+tfidf:
+  ngram_range: [1, 3]
+  max_features: 300000
+  min_df: 2
+  max_df: 0.95
+  top_n: 20
+
+keybert:
+  model: sentence-transformers/all-MiniLM-L6-v2
+  ngram_range: [1, 3]
+  top_n: 20
+  use_mmr: false
+  diversity: 0.5
+
+evaluation:
+  ks: [5, 10]
