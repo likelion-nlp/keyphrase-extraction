@@ -1,0 +1,4 @@
+﻿candidate_source,cand_recall@20,cand_recall@50,cand_recall@100
+KeyBERT,0.1707,0.2217,0.2217
+Generator,0.4122,0.4197,0.4197
+Union,0.4211,0.4637,0.466

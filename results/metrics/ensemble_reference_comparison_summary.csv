@@ -1,0 +1,3 @@
+﻿metric,mean_hybrid_P7,mean_keybart_baseline,win_rate_P7,win_rate_keybart,wilcoxon_stat,p_value
+nDCG@10,0.897826,0.784173,0.85165,0.14835,16340959.0,0.0
+RBO@10,0.451763,0.325453,0.8506,0.1493,14620044.5,0.0

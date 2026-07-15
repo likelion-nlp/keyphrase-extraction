@@ -1,0 +1,38 @@
+{
+  "no_mmr": {
+    "F1@5": 0.1806,
+    "F1@10": 0.1605,
+    "semantic_redundancy": 0.4797,
+    "dup_ratio": 0.0
+  },
+  "lambda_0.5": {
+    "F1@5": 0.2168,
+    "F1@10": 0.1741,
+    "semantic_redundancy": 0.3413,
+    "dup_ratio": 0.0
+  },
+  "lambda_0.6": {
+    "F1@5": 0.2116,
+    "F1@10": 0.1742,
+    "semantic_redundancy": 0.3748,
+    "dup_ratio": 0.0
+  },
+  "lambda_0.7": {
+    "F1@5": 0.2057,
+    "F1@10": 0.1718,
+    "semantic_redundancy": 0.4032,
+    "dup_ratio": 0.0
+  },
+  "lambda_0.8": {
+    "F1@5": 0.1986,
+    "F1@10": 0.1687,
+    "semantic_redundancy": 0.4312,
+    "dup_ratio": 0.0
+  },
+  "lambda_0.9": {
+    "F1@5": 0.1902,
+    "F1@10": 0.1656,
+    "semantic_redundancy": 0.4564,
+    "dup_ratio": 0.0
+  }
+}

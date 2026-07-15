@@ -1,0 +1,17 @@
+{
+  "KeyBERT(top20)": {
+    "cand_recall@20": 0.16975427066436027,
+    "cand_recall@50": 0.16975427066436027,
+    "cand_recall@100": 0.16975427066436027
+  },
+  "Generator(beam10)": {
+    "cand_recall@20": 0.3312003322673176,
+    "cand_recall@50": 0.3318669989339843,
+    "cand_recall@100": 0.3318669989339843
+  },
+  "Union(interleaved)": {
+    "cand_recall@20": 0.3644656157332727,
+    "cand_recall@50": 0.3878647227645049,
+    "cand_recall@100": 0.38791353228831443
+  }
+}
