@@ -275,3 +275,62 @@ python scripts/team_spec_ensemble.py                 # 채점표(앙상블)
 
 > 참고: 구절별 상세 예측(`predictions_per_keyphrase`, ~708MB)은 용량 문제로 본 팀 브랜치에서 제외했다
 > (문서별 예측 + 지표는 포함). 필요 시 `python scripts/organize_results.py`로 재생성한다.
+
+---
+
+## 9. RAG MVP — 관점 ③의 실제 구현 (풀스택 배포)
+
+§2-1에서 **채택한 관점 ③(검색 인덱스로서 기능 = RAG 성능 향상)**과 §1-2의 **RAG 파이프라인 설계자
+persona**를, 말이 아니라 **동작하는 검색 시스템**으로 구현·검증·배포한 결과다.
+핵심은 §1-1의 어휘 불일치 문제를 **P7이 생성한 absent 키프레이즈 = document expansion**으로
+극복하는 것 — 문서 본문에 없는 개념으로 질의해도 원 논문을 찾아가게 만든다.
+
+> 코드·문서는 [`feature/rag-mvp`](../../tree/feature/rag-mvp/rag_mvp) 브랜치의 `rag_mvp/`에 있다
+> (구현 브랜치 위에 얹음). 개요 [`rag_mvp/README.md`](../../blob/feature/rag-mvp/rag_mvp/README.md) ·
+> 아키텍처 [`rag_mvp/ARCHITECTURE.md`](../../blob/feature/rag-mvp/rag_mvp/ARCHITECTURE.md) ·
+> 배포 [`rag_mvp/DEPLOY.md`](../../blob/feature/rag-mvp/rag_mvp/DEPLOY.md).
+
+### 9-1. 시스템 (3계층 풀스택)
+
+```
+React SPA  ──REST──▶  FastAPI  ──▶  Chroma 벡터DB + GPU 모델(bge·P7·KeyBART·Qwen)
+(검색·카드·LLM답변)   (/api/search,answer,ingest)     (색인·검색·인용 답변)
+```
+
+- **색인**: 문서(title+abstract) → KeyBERT/KeyBART 후보 → **P7(SciBERT+aux) 재랭크** →
+  bge-small 임베딩 → Chroma. 문서 하나를 **본문 벡터 1 + 키프레이즈 벡터 N**으로 색인 →
+  본문에 없는 개념(absent)까지 검색 대상이 된다.
+- **검색**: 질의 → bge 임베딩 → 코사인 → **혼합 랭킹 `0.6·doc_sim + 0.4·kp_sim`** → top-k →
+  (선택) Qwen2.5-1.5B가 근거 인용([n]) 답변, 근거 없으면 "모른다"(환각 억제).
+
+### 9-2. 코퍼스
+
+| 코퍼스 | 문서 | 벡터 | 용도 |
+| --- | --- | --- | --- |
+| arXiv cs.CL | 3,000 (2026 최신) | 33,000 | 사용자용 "최신 논문 검색" |
+| KP20k test | 20,000 (gold 보유) | 220,000 | 논지 정량 평가 |
+| mixed | 22,000 | 242,000 | 혼합 강건성 |
+
+### 9-3. 논지 정량 검증 — self-retrieval (§7 연계)
+
+각 문서의 **absent gold(U)를 질의**로 삼아, `plain`(본문만) 색인 vs `kp`(키프레이즈 강화) 색인의
+검색 성공률을 비교했다. absent 질의는 본문과 어휘가 겹치지 않으므로, kp 색인이 이기면 곧
+**document expansion이 어휘 불일치를 해결했다**는 직접 증거다.
+
+| 지표 | 2,000편 개선 | **20,000편 개선** |
+| --- | ---: | ---: |
+| MRR | +3.7% | **+14.7%** |
+| Hit@1 | +2.3% | **+31.5%** |
+| Hit@10 | +7.7% | +6.2% |
+
+**결론**: 코퍼스가 10배 커지자 키프레이즈 강화의 **상대적 이득이 급증**(Hit@1 +31.5%)했다.
+문서가 많아질수록 본문만으로는 못 찾고 **absent 키프레이즈(document expansion)가 결정적**이 된다
+→ §1-1 어휘 불일치·관점 ③이 실제 검색에서 성립함을 실증. mixed 22,000편에서도 동일 경향
+(MRR +14.5% / Hit@1 +28.6%). 재현: `python rag_mvp/eval_absent_fast.py`.
+
+### 9-4. 배포
+
+- **Docker(GPU, CUDA 12.8/cu128)** 로 켰다/껐다: `docker compose up -d` / `stop`. 벡터DB·모델캐시·
+  체크포인트는 볼륨 마운트라 이미지엔 코드만 포함(가볍게 뜸).
+- **공개 URL**: `cloudflared tunnel --url http://localhost:8000` → 무료 임시 공개 주소 (PC 켜져 있는 동안).
+- 정성 시연: 프론트의 **`키프레이즈 강화` vs `본문만` 토글**로 absent 색인 효과를 실시간 대비.
