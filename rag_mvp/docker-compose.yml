@@ -1,0 +1,27 @@
+# RAG MVP — docker compose (GPU). 켜기: docker compose up -d / 끄기: docker compose stop
+services:
+  rag:
+    build:
+      context: ..                      # 프로젝트 루트 (src/scripts/configs/rag_mvp 접근)
+      dockerfile: rag_mvp/Dockerfile
+    image: p7-rag-mvp
+    container_name: p7-rag-mvp
+    ports:
+      - "8000:8000"                    # http://localhost:8000
+    environment:
+      - HF_HUB_OFFLINE=1               # 마운트된 캐시 모델 사용 (다운로드·504 회피)
+    volumes:
+      # 이미 색인한 벡터DB (호스트) → 컨테이너가 그대로 사용
+      - "${USERPROFILE}/.rag_mvp:/root/.rag_mvp"
+      # 다운로드된 모델(bge, Qwen) 캐시 재사용
+      - "${USERPROFILE}/.cache/huggingface:/root/.cache/huggingface"
+      # P7·KeyBART 체크포인트 (신규 문서 색인 시 필요) — 읽기전용
+      - "../outputs/checkpoints:/app/outputs/checkpoints:ro"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: "no"                      # 수동 on/off (자동 재시작 안 함)

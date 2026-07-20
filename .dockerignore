@@ -1,0 +1,13 @@
+results/
+notebooks/
+docs/
+outputs/
+data/
+12/
+.git/
+__pycache__/
+**/__pycache__/
+*.pyc
+*.ipynb
+*.numbers
+rag_mvp/data/chroma/

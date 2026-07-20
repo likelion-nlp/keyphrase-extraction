@@ -1,0 +1,11 @@
+# 파이썬 캐시
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# 벡터DB (재색인으로 생성 — ~/.rag_mvp/chroma)
+data/chroma/
+
+# (선택) arxiv 코퍼스는 fetch_arxiv.py로 재생성 가능 — 포함하려면 아래 두 줄 제거
+# data/arxiv_corpus.csv
+# data/arxiv_corpus.jsonl
